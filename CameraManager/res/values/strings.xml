@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">CameraManager</string>
+    <string name="saving_image">on save</string>
+    <string name="preparing_card">sdcard invalid</string>
+    <string name="no_storage_card">There is no sdcard</string>
+    <string name="not_enough_space">sdcard is not enough space</string>
+</resources>

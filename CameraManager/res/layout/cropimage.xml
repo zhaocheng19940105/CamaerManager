@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#cc000000"
+    android:orientation="horizontal" >
+
+    <view
+        android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_x="0dip"
+        android:layout_y="0dip"
+        class="com.zc.crop.CropImageView"
+        android:background="#55000000" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/discard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/selector_crop_canle" />
+
+        <ImageView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_crop_ok" />
+        <!--
+             <ImageButton
+                android:id="@+id/rotateLeft"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
+                android:layout_toRightOf="@id/discard"
+                style="@style/CropButton"
+                android:src="@drawable/ic_rotate_left"
+                />
+
+        <ImageButton
+                android:id="@+id/rotateRight"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
+                android:layout_toRightOf="@id/rotateLeft"
+                style="@style/CropButton"
+                android:src="@drawable/ic_rotate_right"
+                />
+        -->
+
+    </RelativeLayout>
+
+</RelativeLayout>

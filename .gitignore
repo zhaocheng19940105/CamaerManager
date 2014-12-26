@@ -1,0 +1,35 @@
+#OSX
+*~
+.DS_Store
+*.DS_Store
+
+#Grale
+.gradle
+gradle
+gradlew*
+*.gradle
+
+#Android generated
+bin
+gen
+out
+*.class
+
+#Eclipse
+.project
+.classpath
+.settings
+*.properties
+lint.xml
+
+#IntelliJ IDEA
+.idea
+*.iml
+*.ipl
+build
+
+#Maven
+target
+release.properties
+pom.xml.*
+/PrivateDoctor_Data_Lib/libs/mvn.txt
