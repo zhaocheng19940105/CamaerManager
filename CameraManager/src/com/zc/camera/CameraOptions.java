@@ -6,6 +6,7 @@ import java.io.Serializable;
 import com.zc.type.OpenType;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
@@ -26,11 +27,11 @@ public class CameraOptions implements Serializable {
     private PhotoUri mPhotoUri;
     private CropBuilder mCropBuilder;
     private OpenType mOpenType;
-    private static CameraOptions mOptions;
+    //private static CameraOptions mOptions;
 
     public Uri getFileUri() {
         if (mPhotoUri == null) {
-            getmPhotoUri();
+            getPhotoUri();
         }
         if (mPhotoUri.getFileUri() != null) {
             return mPhotoUri.getFileUri();
@@ -51,34 +52,34 @@ public class CameraOptions implements Serializable {
                 PERF_CONFIG_NAME, 0);
     }
 
-    public PhotoUri getmPhotoUri() {
+    public PhotoUri getPhotoUri() {
         return mPhotoUri != null ? mPhotoUri : (mPhotoUri = new PhotoUri(
                 FileUtil.createFile(DefaultOptions.TEMPFILE),
                 Uri.fromFile(FileUtil.createFile(DefaultOptions.FILEURI))));
     }
 
-    public CameraOptions setmPhotoUri(PhotoUri mPhotoUri) {
+    public CameraOptions setPhotoUri(PhotoUri mPhotoUri) {
         this.mPhotoUri = mPhotoUri;
         return this;
     }
 
-    public OpenType getmOpenType() {
+    public OpenType getOpenType() {
         return mOpenType != null ? mOpenType : DefaultOptions.OPEN_TYPE;
     }
 
-    public CameraOptions setmOpenType(OpenType mOpenType) {
+    public CameraOptions setOpenType(OpenType mOpenType) {
         this.mOpenType = mOpenType;
         return this;
     }
 
-    public CropBuilder getmCropBuilder() {
+    public CropBuilder getCropBuilder() {
         return mCropBuilder != null ? mCropBuilder
                 : (mCropBuilder = new CropBuilder(DefaultOptions.X,
                 DefaultOptions.Y, DefaultOptions.width,
                 DefaultOptions.height));
     }
 
-    public CameraOptions setmCropBuilder(CropBuilder mCropBuilder) {
+    public CameraOptions setCropBuilder(CropBuilder mCropBuilder) {
         this.mCropBuilder = mCropBuilder;
         return this;
     }
@@ -112,17 +113,15 @@ public class CameraOptions implements Serializable {
         editor.commit();
     }
 
-    private CameraOptions(Context mContext) {
-        super();
-        this.mContext = mContext;
+    public static Intent getCameraIntent(Context context){
+        return new Intent(context,CameraActivity.class);
     }
 
-    public static CameraOptions getInstance(Context context) {
-        synchronized (CameraOptions.class) {
-            if (mOptions == null) {
-                mOptions = new CameraOptions(context);
-            }
-        }
-        return mOptions;
+    public CameraOptions(Context mContext,OperaAction action) {
+        super();
+        this.mContext = mContext;
+        this.mOpenType=action.getOpenType();
+        this.mCropBuilder=action.getCropBuilder();
+        this.mPhotoUri=action.getPhotoUri();
     }
 }

@@ -42,11 +42,12 @@ public class CameraActivity extends Activity implements ImageSelcetListernAsy ,C
 
     private void initData() {
         try {
-            manager = new CameraManager(this, this);
+            OperaAction action= getIntent().getParcelableExtra(OperaAction.ACTION);
+            manager = new CameraManager(this, this,new CameraOptions(this,action));
             manager.setCameraOperate(this);
-        } catch (ClassNotFoundException e) {
-            Log.e(TAG, "no find camera");
-            e.printStackTrace();
+            manager.process();
+        }catch (Exception e){
+
         }
     }
 

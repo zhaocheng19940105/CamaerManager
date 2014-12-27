@@ -199,7 +199,7 @@ public class PhotoUtil {
         }
         FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(mBuilder.getmPhotoUri()
+            outputStream = new FileOutputStream(mBuilder.getPhotoUri()
                     .getTempFile());
             baos.writeTo(outputStream);
             baos.flush();

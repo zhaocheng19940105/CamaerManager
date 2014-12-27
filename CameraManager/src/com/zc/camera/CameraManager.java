@@ -8,8 +8,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -36,7 +36,7 @@ public class CameraManager {
 
     private Context mContext;
 
-    public static CameraOptions mBuilder;
+    public CameraOptions mBuilder;
 
     private Bitmap compressImage;
 
@@ -44,26 +44,26 @@ public class CameraManager {
 
     private CameraOperate mCameraOperate;
 
-    private Handler mHandler;
 
-    public CameraManager(Context context, ImageSelcetListernAsy listernAsy)
-            throws ClassNotFoundException {
+    public CameraManager(Context context, ImageSelcetListernAsy listernAsy, CameraOptions mBuilder) {
         super();
         this.mContext = context;
         this.mAsyListern = listernAsy;
-
-        if (mBuilder == null) {
-            mBuilder = CameraOptions.getInstance(context);
-        }
-        distingOn();
+        this.mBuilder = mBuilder;
     }
 
     public void setCameraOperate(CameraOperate cameraOperate) {
         this.mCameraOperate = cameraOperate;
     }
 
+    public void process() throws ClassNotFoundException {
+
+            distingOn();
+
+    }
+
     private void distingOn() throws ClassNotFoundException {
-        switch (mBuilder.getmOpenType()) {
+        switch (mBuilder.getOpenType()) {
             case OPEN_CAMERA:
             case OPEN_CAMERA_CROP:
                 if (mCameraOperate != null)
@@ -86,10 +86,13 @@ public class CameraManager {
      */
     private Intent getOpenCameraOpera() throws ClassNotFoundException {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        final Intent intent_camera = mContext.getPackageManager()
-                .getLaunchIntentForPackage(FORK_CAMERA_PACKAGE);
-        if (intent_camera != null) {
-            intent.setPackage(FORK_CAMERA_PACKAGE);
+        try {
+            final Intent intent_camera = mContext.getPackageManager()
+                    .getLaunchIntentForPackage(FORK_CAMERA_PACKAGE);
+            if (intent_camera != null) {
+                intent.setPackage(FORK_CAMERA_PACKAGE);
+            }
+        } catch (Exception e) {
         }
         if (mBuilder.getFileUri() != null)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mBuilder.getFileUri());
@@ -97,6 +100,7 @@ public class CameraManager {
             Log.e(TAG, "fileUri is empty");
             return null;
         }
+        Log.d(TAG, "try open camera success !");
         return intent;
     }
 
@@ -121,11 +125,11 @@ public class CameraManager {
         Intent intent = new Intent(mContext, CropImage.class);
         intent.putExtra(CropImage.IMAGE_PATH, mBuilder.getFileUri().getPath());
         intent.putExtra(CropImage.SCALE, true);
-        intent.putExtra(CropImage.ASPECT_X, mBuilder.getmCropBuilder().getX());
-        intent.putExtra(CropImage.ASPECT_Y, mBuilder.getmCropBuilder().getY());
-        intent.putExtra(CropImage.OUTPUT_X, mBuilder.getmCropBuilder()
+        intent.putExtra(CropImage.ASPECT_X, mBuilder.getCropBuilder().getX());
+        intent.putExtra(CropImage.ASPECT_Y, mBuilder.getCropBuilder().getY());
+        intent.putExtra(CropImage.OUTPUT_X, mBuilder.getCropBuilder()
                 .getWeight());
-        intent.putExtra(CropImage.OUTPUT_Y, mBuilder.getmCropBuilder()
+        intent.putExtra(CropImage.OUTPUT_Y, mBuilder.getCropBuilder()
                 .getHeight());
         return intent;
     }
@@ -135,7 +139,7 @@ public class CameraManager {
      */
     public void cameraResult() {
         compressImage = PhotoUtil.getPhoto(mBuilder);
-        if (mBuilder.getmOpenType() == OpenType.OPEN_CAMERA_CROP
+        if (mBuilder.getOpenType() == OpenType.OPEN_CAMERA_CROP
                 && null != compressImage) {
             writePhotoFile(mBuilder.getFileUri().getPath(), compressImage);
             if (mCameraOperate != null)
@@ -157,11 +161,10 @@ public class CameraManager {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-           FileUtil.closeQuietly(baos,outputStream);
+            FileUtil.closeQuietly(baos, outputStream);
         }
 
     }
-
 
 
     public void galleryResult(Intent data) {
@@ -173,9 +176,8 @@ public class CameraManager {
                 FileOutputStream os = new FileOutputStream(mBuilder
                         .getFileUri().getPath());
                 PhotoUtil.copyStream(is, os);
-                FileUtil.closeQuietly(os,is);
-                if (mBuilder.getmOpenType() == OpenType.OPEN_GALLERY_CROP) {
-                    //openCrop();
+                FileUtil.closeQuietly(os, is);
+                if (mBuilder.getOpenType() == OpenType.OPEN_GALLERY_CROP) {
                     if (mCameraOperate != null)
                         mCameraOperate.openCrop(getOpenCropOpera());
                 } else {
@@ -192,32 +194,25 @@ public class CameraManager {
      * The compressed image
      */
     public void compressPhoto() {
-        new Thread() {
-            @Override
-            public void run() {
-                compressImage = PhotoUtil.getPhoto(mBuilder);
-                PhotoUtil.depositInDisk(compressImage, mBuilder);
-                getImagePath();
-                super.run();
-            }
-        }.start();
-
+        new CompressPhotoTask().execute();
     }
 
 
-    private void getImagePath() {
-        mBuilder.delUri();
-        if (mHandler == null) {
-            mHandler = new Handler(mContext.getMainLooper());
+    private class CompressPhotoTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            compressImage = PhotoUtil.getPhoto(mBuilder);
+            PhotoUtil.depositInDisk(compressImage, mBuilder);
+            mBuilder.delUri();
+            return null;
         }
-        mHandler.post(new Runnable() {
 
-            @Override
-            public void run() {
-                mAsyListern.onSelectedAsy(mBuilder.getmPhotoUri().getTempFile()
-                        .getPath());
-            }
-        });
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mAsyListern.onSelectedAsy(mBuilder.getPhotoUri().getTempFile()
+                    .getPath());
+        }
     }
-
 }
