@@ -7,7 +7,7 @@
 .gradle
 gradle
 gradlew*
-*.gradle
+
 
 #Android generated
 bin
