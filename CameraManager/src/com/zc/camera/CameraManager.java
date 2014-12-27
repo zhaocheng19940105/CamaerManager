@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -67,12 +66,12 @@ public class CameraManager {
             case OPEN_CAMERA:
             case OPEN_CAMERA_CROP:
                 if (mCameraOperate != null)
-                    mCameraOperate.openCamera(getOpenCameraOpera());
+                    mCameraOperate.onOpenCamera(getOpenCameraOpera());
                 break;
             case OPEN_GALLERY:
             case OPEN_GALLERY_CROP:
                 if (mCameraOperate != null)
-                    mCameraOperate.openGallery(getOpenGalleryOpera());
+                    mCameraOperate.onOpenGallery(getOpenGalleryOpera());
                 break;
             default:
                 break;
@@ -143,7 +142,7 @@ public class CameraManager {
                 && null != compressImage) {
             writePhotoFile(mBuilder.getFileUri().getPath(), compressImage);
             if (mCameraOperate != null)
-                mCameraOperate.openCrop(getOpenCropOpera());
+                mCameraOperate.onOpenCrop(getOpenCropOpera());
         } else {
             compressPhoto();
 
@@ -179,7 +178,7 @@ public class CameraManager {
                 FileUtil.closeQuietly(os, is);
                 if (mBuilder.getOpenType() == OpenType.OPEN_GALLERY_CROP) {
                     if (mCameraOperate != null)
-                        mCameraOperate.openCrop(getOpenCropOpera());
+                        mCameraOperate.onOpenCrop(getOpenCropOpera());
                 } else {
                     compressPhoto();
                 }

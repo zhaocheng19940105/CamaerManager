@@ -11,20 +11,20 @@ public interface CameraOperate {
      * open android camera
      * @param intent Standard opera intent
      */
-    void openCamera(Intent intent);
+    void onOpenCamera(Intent intent);
 
     /**
      * According to different using a different version number Action
      * @param intent
      */
-    void openGallery(Intent intent);
+    void onOpenGallery(Intent intent);
 
     /**
      * Because individual android call system will cut out the problem so this
      * is crop is this custom
      * @param intent
      */
-    void openCrop(Intent intent);
+    void onOpenCrop(Intent intent);
 
 
 }

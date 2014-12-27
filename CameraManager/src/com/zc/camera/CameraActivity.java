@@ -1,6 +1,7 @@
 package com.zc.camera;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,12 +43,13 @@ public class CameraActivity extends Activity implements ImageSelcetListernAsy ,C
 
     private void initData() {
         try {
-            OperaAction action= getIntent().getParcelableExtra(OperaAction.ACTION);
-            manager = new CameraManager(this, this,new CameraOptions(this,action));
+            CameraOptions cameraOptions= getIntent().getParcelableExtra(CameraOptions.INTENT_ACTION);
+            cameraOptions.init(this);
+            manager = new CameraManager(this, this,cameraOptions);
             manager.setCameraOperate(this);
             manager.process();
         }catch (Exception e){
-
+            Log.e(TAG,Log.getStackTraceString(e));
         }
     }
 
@@ -84,17 +86,17 @@ public class CameraActivity extends Activity implements ImageSelcetListernAsy ,C
     }
 
     @Override
-    public void openCamera(Intent intent) {
+    public void onOpenCamera(Intent intent) {
         startActivityForResult(intent, OPEN_CAMERA_CODE);
     }
 
     @Override
-    public void openGallery(Intent intent) {
+    public void onOpenGallery(Intent intent) {
         startActivityForResult(intent, OPEN_GALLERY_CODE);
     }
 
     @Override
-    public void openCrop(Intent intent) {
+    public void onOpenCrop(Intent intent) {
         startActivityForResult(intent, CROP_PHOTO_CODE);
     }
 }

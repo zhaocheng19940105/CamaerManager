@@ -9,17 +9,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * camera builder
  *
  * @author zhaocheng
  */
-public class CameraOptions implements Serializable {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 2336944222293048240L;
+public class CameraOptions implements Parcelable {
+
+    public static final String INTENT_ACTION="com.zc.camera.CameraOptions.ACTION";
 
     private static final String PERF_CONFIG_NAME="setting";
     private static final String URI_KEY = "PHOTO_URI";
@@ -27,7 +27,6 @@ public class CameraOptions implements Serializable {
     private PhotoUri mPhotoUri;
     private CropBuilder mCropBuilder;
     private OpenType mOpenType;
-    //private static CameraOptions mOptions;
 
     public Uri getFileUri() {
         if (mPhotoUri == null) {
@@ -117,11 +116,67 @@ public class CameraOptions implements Serializable {
         return new Intent(context,CameraActivity.class);
     }
 
-    public CameraOptions(Context mContext,OperaAction action) {
+    public CameraOptions(Context mContext) {
         super();
         this.mContext = mContext;
-        this.mOpenType=action.getOpenType();
-        this.mCropBuilder=action.getCropBuilder();
-        this.mPhotoUri=action.getPhotoUri();
     }
+
+    void init(Context context){
+        this.mContext=context;
+    }
+
+    public static final Parcelable.Creator<CameraOptions> CREATOR = new Parcelable.Creator<CameraOptions>() {
+
+        @Override
+        public CameraOptions[] newArray(int size) {
+            return new CameraOptions[size];
+        }
+
+        @Override
+        public CameraOptions createFromParcel(Parcel source) {
+            // TODO Auto-generated method stub
+
+            return new CameraOptions(source);
+        }
+
+    };
+
+    CameraOptions(Parcel source){
+        mOpenType= (OpenType) source.readSerializable();
+        mCropBuilder= (CropBuilder) source.readSerializable();
+        mPhotoUri= (PhotoUri) source.readSerializable();
+
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeSerializable(mOpenType);
+        dest.writeSerializable(mCropBuilder);
+        dest.writeSerializable(mPhotoUri);
+    }
+
+    public CameraOptions(OpenType openType,CropBuilder cropBuilder,PhotoUri photoUri){
+        this.mOpenType=openType;
+        this.mCropBuilder=cropBuilder;
+        this.mPhotoUri=photoUri;
+    }
+
+    public CameraOptions(OpenType openType){
+        this(openType,null,null);
+    }
+
+    public CameraOptions(OpenType openType,PhotoUri photoUri){
+        this(openType,null,photoUri);
+    }
+
+    public CameraOptions(OpenType openType,CropBuilder cropBuilder){
+        this(openType,cropBuilder,null);
+    }
+
 }

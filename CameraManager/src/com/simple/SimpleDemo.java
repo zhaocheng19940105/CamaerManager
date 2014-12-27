@@ -11,7 +11,6 @@ import android.widget.ImageView;
 
 import com.zc.camera.CameraOptions;
 import com.zc.camera.CropBuilder;
-import com.zc.camera.OperaAction;
 import com.zc.camera.PhotoUtil;
 import com.zc.cameramanager.R;
 import com.zc.type.OpenType;
@@ -37,25 +36,26 @@ public class SimpleDemo extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent =CameraOptions.getCameraIntent(this);
-        OperaAction action=null;
+        CameraOptions action=null;
         switch (v.getId()) {
         case R.id.button1:
-            action=new OperaAction(OpenType.OPEN_CAMERA);
+            action=new CameraOptions(OpenType.OPEN_CAMERA);
             break;
         case R.id.button2:
-            action=new OperaAction(OpenType.OPEN_CAMERA_CROP,new CropBuilder(2, 3, 300, 450));
+            action=new CameraOptions(OpenType.OPEN_CAMERA_CROP,new CropBuilder(2, 3, 300, 450));
             break;
         case R.id.button3:
-            action=new OperaAction(OpenType.OPEN_GALLERY);
+            action=new CameraOptions(OpenType.OPEN_GALLERY);
             break;
         case R.id.button4:
-            action=new OperaAction(OpenType.OPEN_GALLERY_CROP,new CropBuilder(2, 3, 300, 450));
+            action=new CameraOptions(OpenType.OPEN_GALLERY_CROP,new CropBuilder(2, 3, 300, 450));
             break;
         default:
             break;
         }
+        Bitmap b=null;
         if(action != null)
-        intent.putExtra(OperaAction.ACTION,action);
+        intent.putExtra(CameraOptions.INTENT_ACTION,action);
         startActivityForResult(intent, 100);
     }
 
