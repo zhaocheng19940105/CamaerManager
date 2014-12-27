@@ -202,18 +202,12 @@ public class PhotoUtil {
             outputStream = new FileOutputStream(mBuilder.getmPhotoUri()
                     .getTempFile());
             baos.writeTo(outputStream);
+            baos.flush();
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            FileUtil.closeQuietly(outputStream,baos);
         }
-        if (outputStream != null) {
-            try {
-                outputStream.close();
-                if (baos != null) {
-                    baos.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 }

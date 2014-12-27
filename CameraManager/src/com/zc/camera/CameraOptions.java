@@ -11,15 +11,16 @@ import android.net.Uri;
 
 /**
  * camera builder
- * 
+ *
  * @author zhaocheng
- * 
  */
 public class CameraOptions implements Serializable {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 2336944222293048240L;
+
+    private static final String PERF_CONFIG_NAME="setting";
     private static final String URI_KEY = "PHOTO_URI";
     private Context mContext;
     private PhotoUri mPhotoUri;
@@ -35,14 +36,19 @@ public class CameraOptions implements Serializable {
             return mPhotoUri.getFileUri();
         } else {
             if (mPhotoUri.getFileUri() == null) {
-                SharedPreferences mPreferences = mContext.getSharedPreferences(
-                        "setting", 0);
-                String str = mPreferences.getString(URI_KEY, "");
+
+                String str = getDefaultSharedPreferences().getString(URI_KEY, "");
                 mPhotoUri.setFileUri(Uri.fromFile(FileUtil.createFile(str)));
 
             }
         }
+
         return mPhotoUri.getFileUri();
+    }
+
+    private SharedPreferences getDefaultSharedPreferences(){
+        return mContext.getSharedPreferences(
+                PERF_CONFIG_NAME, 0);
     }
 
     public PhotoUri getmPhotoUri() {
@@ -68,8 +74,8 @@ public class CameraOptions implements Serializable {
     public CropBuilder getmCropBuilder() {
         return mCropBuilder != null ? mCropBuilder
                 : (mCropBuilder = new CropBuilder(DefaultOptions.X,
-                        DefaultOptions.Y, DefaultOptions.width,
-                        DefaultOptions.height));
+                DefaultOptions.Y, DefaultOptions.width,
+                DefaultOptions.height));
     }
 
     public CameraOptions setmCropBuilder(CropBuilder mCropBuilder) {
@@ -98,11 +104,9 @@ public class CameraOptions implements Serializable {
 
     /**
      * android compatibility Because individual mobile phone recycling Uri
-     * 
      */
     public void saveUri() {
-        SharedPreferences mPreferences = mContext.getSharedPreferences(
-                "setting", 0);
+        SharedPreferences mPreferences =getDefaultSharedPreferences();
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(URI_KEY, getFileUri().getPath());
         editor.commit();
@@ -114,8 +118,10 @@ public class CameraOptions implements Serializable {
     }
 
     public static CameraOptions getInstance(Context context) {
-        if (mOptions == null) {
-            mOptions = new CameraOptions(context);
+        synchronized (CameraOptions.class) {
+            if (mOptions == null) {
+                mOptions = new CameraOptions(context);
+            }
         }
         return mOptions;
     }

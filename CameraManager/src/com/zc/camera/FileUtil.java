@@ -2,6 +2,7 @@ package com.zc.camera;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,6 +14,14 @@ import java.text.DecimalFormat;
 import android.text.TextUtils;
 
 public class FileUtil {
+
+    /**
+     * Deprecated
+     * see  android.text.format.Formatter.formatFileSize()
+     * @param fileS
+     * @return
+     */
+    @Deprecated
     public static String formatFileSize(long fileS) {
         DecimalFormat df = new DecimalFormat("#.00");
         String fileSizeString = "";
@@ -197,5 +206,18 @@ public class FileUtil {
         }
         String filename = url.substring(url.lastIndexOf("/") + 1);
         return filename;
+    }
+
+    public static void  closeQuietly(Closeable... closeables){
+        if(closeables != null){
+            for (Closeable closeable:closeables){
+                try{
+                    if(closeable!= null){
+                        closeable.close();
+                    }
+                }catch (Exception e){
+                }
+            }
+        }
     }
 }
