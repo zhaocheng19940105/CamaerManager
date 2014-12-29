@@ -52,4 +52,6 @@ public class CropBuilder implements Serializable {
         this.height = height;
     }
 
+
+
 }
