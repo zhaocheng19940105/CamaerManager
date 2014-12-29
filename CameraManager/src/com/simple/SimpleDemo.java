@@ -35,27 +35,24 @@ public class SimpleDemo extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent =CameraOptions.getCameraIntent(this);
-        CameraOptions action=null;
+        Intent intent =null;
         switch (v.getId()) {
         case R.id.button1:
-            action=new CameraOptions(OpenType.OPEN_CAMERA);
+            intent= CameraOptions.creatOptions(OpenType.OPEN_CAMERA).builder(this);
             break;
         case R.id.button2:
-            action=new CameraOptions(OpenType.OPEN_CAMERA_CROP,new CropBuilder(2, 3, 300, 450));
+            intent=CameraOptions.creatOptions(OpenType.OPEN_CAMERA_CROP).setCropBuilder(new CropBuilder(2, 3, 300, 450)).builder(this);
             break;
         case R.id.button3:
-            action=new CameraOptions(OpenType.OPEN_GALLERY);
+            intent=CameraOptions.creatOptions(OpenType.OPEN_GALLERY).builder(this);
             break;
         case R.id.button4:
-            action=new CameraOptions(OpenType.OPEN_GALLERY_CROP,new CropBuilder(2, 3, 300, 450));
+            intent=CameraOptions.creatOptions(OpenType.OPEN_GALLERY_CROP).setCropBuilder(new CropBuilder(2, 3, 300, 450)).builder(this);
             break;
         default:
             break;
         }
-        Bitmap b=null;
-        if(action != null)
-        intent.putExtra(CameraOptions.INTENT_ACTION,action);
+        if(intent != null)
         startActivityForResult(intent, 100);
     }
 

@@ -141,7 +141,7 @@ public class CameraOptions implements Parcelable {
 
     };
 
-    CameraOptions(Parcel source){
+    private CameraOptions(Parcel source){
         mOpenType= (OpenType) source.readSerializable();
         mCropBuilder= (CropBuilder) source.readSerializable();
         mPhotoUri= (PhotoUri) source.readSerializable();
@@ -161,6 +161,12 @@ public class CameraOptions implements Parcelable {
         dest.writeSerializable(mPhotoUri);
     }
 
+    public Intent builder(Context context){
+        Intent intent=new Intent(context,CameraActivity.class);
+        intent.putExtra(CameraOptions.INTENT_ACTION,this);
+        return intent;
+    }
+
     public CameraOptions(OpenType openType,CropBuilder cropBuilder,PhotoUri photoUri){
         this.mOpenType=openType;
         this.mCropBuilder=cropBuilder;
@@ -177,6 +183,10 @@ public class CameraOptions implements Parcelable {
 
     public CameraOptions(OpenType openType,CropBuilder cropBuilder){
         this(openType,cropBuilder,null);
+    }
+
+    public static CameraOptions creatOptions(OpenType openType){
+        return new CameraOptions(openType);
     }
 
 }
