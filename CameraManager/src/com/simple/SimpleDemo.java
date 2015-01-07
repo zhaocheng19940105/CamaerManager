@@ -9,16 +9,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.zc.camera.CameraHandler;
 import com.zc.camera.CameraOptions;
 import com.zc.camera.CropBuilder;
+import com.zc.camera.ImageSelcetListernAsy;
 import com.zc.camera.PhotoUtil;
 import com.zc.cameramanager.R;
 import com.zc.type.OpenType;
 
-public class SimpleDemo extends Activity implements OnClickListener {
+public class SimpleDemo extends Activity implements OnClickListener,ImageSelcetListernAsy {
 
     private ImageView imageView;
-    
+    private CameraHandler cameraHandler;
 
 
     @Override
@@ -31,29 +33,31 @@ public class SimpleDemo extends Activity implements OnClickListener {
         findViewById(R.id.button3).setOnClickListener(this);
         findViewById(R.id.button4).setOnClickListener(this);
         imageView = (ImageView) findViewById(R.id.imageView1);
+        cameraHandler=new CameraHandler(this);
+        cameraHandler.setImageSelcetListernAsy(this);
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent =null;
+
         switch (v.getId()) {
         case R.id.button1:
-            intent= CameraOptions.creatOptions(OpenType.OPEN_CAMERA).builder(this);
+            cameraHandler.setCameraOptions(CameraOptions.creatOptions(OpenType.OPEN_CAMERA));
             break;
         case R.id.button2:
-            intent=CameraOptions.creatOptions(OpenType.OPEN_CAMERA_CROP).setCropBuilder(new CropBuilder(2, 3, 300, 450)).builder(this);
+            cameraHandler.setCameraOptions(CameraOptions.creatOptions(OpenType.OPEN_CAMERA_CROP).setCropBuilder(new CropBuilder(2, 3, 300, 450)));
             break;
         case R.id.button3:
-            intent=CameraOptions.creatOptions(OpenType.OPEN_GALLERY).builder(this);
+            cameraHandler.setCameraOptions(CameraOptions.creatOptions(OpenType.OPEN_GALLERY));
             break;
         case R.id.button4:
-            intent=CameraOptions.creatOptions(OpenType.OPEN_GALLERY_CROP).setCropBuilder(new CropBuilder(2, 3, 300, 450)).builder(this);
+            cameraHandler.setCameraOptions(CameraOptions.creatOptions(OpenType.OPEN_GALLERY_CROP).setCropBuilder(new CropBuilder(2, 3, 300, 450)));
             break;
         default:
             break;
         }
-        if(intent != null)
-        startActivityForResult(intent, 100);
+        cameraHandler.start();
+
     }
 
     public void setImageView(String path) {
@@ -65,14 +69,16 @@ public class SimpleDemo extends Activity implements OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 100) {
-                String stringExtra = data.getExtras().getString(
-                        PhotoUtil.INTENT_PATH);
-                setImageView(stringExtra);
-            }
 
+        if(cameraHandler != null){
+            cameraHandler.dispatchCamera(requestCode,resultCode,data);
         }
+        
+
     }
 
+    @Override
+    public void onSelectedAsy(String imgPath) {
+        setImageView(imgPath);
+    }
 }

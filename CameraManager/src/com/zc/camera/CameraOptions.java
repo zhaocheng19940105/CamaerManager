@@ -1,7 +1,6 @@
 package com.zc.camera;
 
 import java.io.File;
-import java.io.Serializable;
 
 import com.zc.type.OpenType;
 
@@ -113,7 +112,7 @@ public class CameraOptions implements Parcelable {
     }
 
     public static Intent getCameraIntent(Context context){
-        return new Intent(context,CameraActivity.class);
+        return new Intent(context,CameraHandler.class);
     }
 
     public CameraOptions(Context mContext) {
@@ -161,11 +160,7 @@ public class CameraOptions implements Parcelable {
         dest.writeSerializable(mPhotoUri);
     }
 
-    public Intent builder(Context context){
-        Intent intent=new Intent(context,CameraActivity.class);
-        intent.putExtra(CameraOptions.INTENT_ACTION,this);
-        return intent;
-    }
+
 
     public CameraOptions(OpenType openType,CropBuilder cropBuilder,PhotoUri photoUri){
         this.mOpenType=openType;
