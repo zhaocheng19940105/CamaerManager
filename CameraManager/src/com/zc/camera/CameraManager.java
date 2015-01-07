@@ -51,14 +51,30 @@ public class CameraManager {
         this.mBuilder = mBuilder;
     }
 
+    public CameraManager(Context context,  CameraOptions mBuilder) {
+       this(context,null,mBuilder);
+    }
+    
+    public CameraManager(Context context){
+        this(context,null);
+    }
+    
+    public void setCameraOptions(CameraOptions mOptions){
+        this.mBuilder=mOptions;
+        
+    }
+
     public void setCameraOperate(CameraOperate cameraOperate) {
         this.mCameraOperate = cameraOperate;
     }
 
     public void process() throws ClassNotFoundException {
-
             distingOn();
-
+    }
+    
+    public void setImageSelcetListernAsy(ImageSelcetListernAsy mAsyListern){
+        this.mAsyListern=mAsyListern;
+        
     }
 
     private void distingOn() throws ClassNotFoundException {

@@ -27,10 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.zc.camera.CameraActivity"
-          android:theme="@android:style/Theme.Translucent"  >
-        </activity>
+
         <activity android:name="com.zc.crop.CropImage" >
         </activity>
         <activity android:name="com.zc.crop.MonitoredActivity" >
