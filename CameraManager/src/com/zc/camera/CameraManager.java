@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.zc.camera.callback.CameraOperate;
 import com.zc.crop.CropImage;
+import com.zc.photoalbum.SelectImageActivity;
 import com.zc.type.OpenType;
 
 /**
@@ -89,9 +90,19 @@ public class CameraManager {
                 if (mCameraOperate != null)
                     mCameraOperate.onOpenGallery(getOpenGalleryOpera());
                 break;
+            case OPRN_USER_ALBUM:
+                if (mCameraOperate!=null) {
+                    mCameraOperate.onOpenUserAlbum(getOpenAlbum());
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    private Intent getOpenAlbum() {
+        Intent intent = new Intent(mContext,SelectImageActivity.class);
+        return intent;
     }
 
     /**

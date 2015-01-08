@@ -1,8 +1,13 @@
 <resources>
 
+ 
     <string name="app_name">CameraManager</string>
     <string name="saving_image">on save</string>
     <string name="preparing_card">sdcard invalid</string>
     <string name="no_storage_card">There is no sdcard</string>
     <string name="not_enough_space">sdcard is not enough space</string>
+    <string name="all_photo">AllPhoto</string>
+    <string name="select_bucket">select bucket</string>
+    <string name="select_num">selected photo %d </string>
+    <string name="select_ok">select ok</string>
 </resources>

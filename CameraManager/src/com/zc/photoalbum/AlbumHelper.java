@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.zc.cameramanager.R;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +27,7 @@ import android.util.Log;
  */
 public class AlbumHelper {
     final String TAG = getClass().getSimpleName();
+    final String ALL_KEY = "ALL_PHOTO";
     Context context;
     ContentResolver cr;
     /**
@@ -181,6 +184,8 @@ public class AlbumHelper {
         Cursor cur = cr.query(Media.EXTERNAL_CONTENT_URI, columns, null, null,
                 null);
         ImageBucket allPhoto = new ImageBucket();
+        allPhoto.count = cur.getCount();
+        allPhoto.bucketName = context.getResources().getString(R.string.all_photo);
         allPhoto.imageList = new ArrayList<ImageItem>();
         if (cur.moveToFirst()) {
             // Obtain the specified column index
@@ -193,7 +198,7 @@ public class AlbumHelper {
                     .getColumnIndexOrThrow(Media.BUCKET_DISPLAY_NAME);
             int bucketIdIndex = cur.getColumnIndexOrThrow(Media.BUCKET_ID);
             int picasaIdIndex = cur.getColumnIndexOrThrow(Media.PICASA_ID);
-          
+
             do {
                 String _id = cur.getString(photoIDIndex);
                 String name = cur.getString(photoNameIndex);
@@ -222,13 +227,13 @@ public class AlbumHelper {
                 imageItem.imagePath = path;
                 imageItem.thumbnailPath = thumbnailList.get(_id);
                 bucket.imageList.add(imageItem);
-
+                allPhoto.imageList.add(imageItem);
             } while (cur.moveToNext());
         }
 
+        bucketList.put(ALL_KEY, allPhoto);
         Iterator<Entry<String, ImageBucket>> itr = bucketList.entrySet()
                 .iterator();
-        bucketList.put("0", allPhoto);
         while (itr.hasNext()) {
             Map.Entry<String, ImageBucket> entry = (Map.Entry<String, ImageBucket>) itr
                     .next();
@@ -256,10 +261,10 @@ public class AlbumHelper {
         while (itr.hasNext()) {
             Map.Entry<String, ImageBucket> entry = (Map.Entry<String, ImageBucket>) itr
                     .next();
-            if ("0".equals(entry.getKey())) 
-            tmpList.add(0, entry.getValue());
-                else
-            tmpList.add(entry.getValue());
+            if (ALL_KEY.equals(entry.getKey()))
+                tmpList.add(0, entry.getValue());
+            else
+                tmpList.add(entry.getValue());
         }
         return tmpList;
     }

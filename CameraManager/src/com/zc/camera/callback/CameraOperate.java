@@ -25,6 +25,12 @@ public interface CameraOperate {
      * @param intent
      */
     void onOpenCrop(Intent intent);
+    
+    /**
+     * open user album
+     * @param intent
+     */
+    void onOpenUserAlbum(Intent intent);
 
 
 }

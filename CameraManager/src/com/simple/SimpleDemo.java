@@ -32,6 +32,7 @@ public class SimpleDemo extends Activity implements OnClickListener,ImageSelcetL
         findViewById(R.id.button2).setOnClickListener(this);
         findViewById(R.id.button3).setOnClickListener(this);
         findViewById(R.id.button4).setOnClickListener(this);
+        findViewById(R.id.button5).setOnClickListener(this);
         imageView = (ImageView) findViewById(R.id.imageView1);
         cameraHandler=new CameraHandler(this);
         cameraHandler.setImageSelcetListernAsy(this);
@@ -52,6 +53,9 @@ public class SimpleDemo extends Activity implements OnClickListener,ImageSelcetL
             break;
         case R.id.button4:
             cameraHandler.setCameraOptions(CameraOptions.creatOptions(OpenType.OPEN_GALLERY_CROP).setCropBuilder(new CropBuilder(2, 3, 300, 450)));
+            break;
+        case R.id.button5:
+            cameraHandler.setCameraOptions(CameraOptions.creatOptions(OpenType.OPRN_USER_ALBUM));
             break;
         default:
             break;

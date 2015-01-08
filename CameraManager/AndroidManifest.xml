@@ -24,13 +24,15 @@
         <activity android:name="com.simple.SimpleDemo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name="com.zc.crop.CropImage" >
         </activity>
         <activity android:name="com.zc.crop.MonitoredActivity" >
+        </activity>
+        <activity android:name="com.zc.photoalbum.SelectImageActivity" >
         </activity>
     </application>
 
