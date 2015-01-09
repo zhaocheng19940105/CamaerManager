@@ -9,9 +9,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout.LayoutParams;
 
 import com.zc.camera.CameraHandler;
 import com.zc.camera.CameraOptions;
@@ -100,16 +100,13 @@ public class SimpleDemo extends Activity implements OnClickListener,
     @Override
     public void onSelectedAsy(List<ImageItem> pathList) {
         LinearLayout view = (LinearLayout) findViewById(R.id.viewprant);
-        for (int i = 0; i < pathList.size(); i++) {
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT);
+        for (ImageItem imageItem : pathList) {
             ImageView mImageView = new ImageView(this);
-            mImageView.setLayoutParams(new LayoutParams(
-                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-            ImageLoaderUtil.loadLoaclImage(mImageView,
-                    pathList.get(i).imagePath);
-            view.addView(mImageView, new LayoutParams(
-                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+            mImageView.setLayoutParams(params);
+            ImageLoaderUtil.loadLoaclImage(mImageView, imageItem.imagePath);
+            view.addView(mImageView, params);
         }
     }
 }
