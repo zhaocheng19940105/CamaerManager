@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,9 +16,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.zc.adapter.BucketAdapter;
 import com.zc.adapter.BucketItemAdapter;
+import com.zc.camera.CameraManager;
 import com.zc.cameramanager.R;
 
 public class SelectImageActivity extends Activity {
@@ -41,12 +45,18 @@ public class SelectImageActivity extends Activity {
 
     private List<ImageBucket> dataList;
 
+    private int maxSelect = 0;
+
     private PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
+        if (getIntent() != null) {
+            maxSelect = getIntent().getIntExtra(
+                    CameraManager.MAX_SELECT_ACTION, 0);
+        }
         findView();
         initData();
         initBucket();
@@ -65,9 +75,15 @@ public class SelectImageActivity extends Activity {
                     mBucketItemAdapter.getItem(position).isSelected = false;
                     selectData.remove(mBucketItemAdapter.getItem(position));
                 } else {
-                    viewById.setVisibility(View.VISIBLE);
-                    mBucketItemAdapter.getItem(position).isSelected = true;
-                    selectData.add(mBucketItemAdapter.getItem(position));
+
+                    if (selectData.size() >= maxSelect)
+                        Toast.makeText(SelectImageActivity.this,
+                                "max select num is  " + maxSelect, 1000).show();
+                    else {
+                        viewById.setVisibility(View.VISIBLE);
+                        mBucketItemAdapter.getItem(position).isSelected = true;
+                        selectData.add(mBucketItemAdapter.getItem(position));
+                    }
                 }
             }
         });
@@ -146,7 +162,7 @@ public class SelectImageActivity extends Activity {
     private void initData() {
         helper = AlbumHelper.getHelper();
         helper.init(this);
-        dataList = helper.getImagesBucketList(false);
+        dataList = helper.getImagesBucketList(true);
         adapterData = new ArrayList<ImageItem>();
         adapterData.addAll(dataList.get(0).imageList);
         mBucketItemAdapter = new BucketItemAdapter(this, adapterData);
@@ -154,6 +170,9 @@ public class SelectImageActivity extends Activity {
     }
 
     private void getListImagePath() {
+        Intent intent = getIntent();
+        intent.putParcelableArrayListExtra(CameraManager.MAX_SELECT_ACTION, (ArrayList<? extends Parcelable>) selectData);
+        setResult(RESULT_OK, intent);
         this.finish();
     }
 

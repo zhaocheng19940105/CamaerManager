@@ -7,8 +7,9 @@ public class DefaultOptions {
     public static final String FILEURI = "/sdcard/options.jpg";
     public static final int X = 1;
     public static final int Y = 1;
-    public static final int width = 300;
-    public static final int height = 300;
+    public static final int WIDTH = 300;
+    public static final int HEIGHT = 300;
+    public static final int MAXSELECT=5;
     public static final OpenType OPEN_TYPE = OpenType.OPEN_CAMERA;
 
 }

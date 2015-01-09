@@ -3,17 +3,21 @@ package com.zc.camera;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import com.zc.camera.callback.CameraOperate;
 import com.zc.crop.CropImage;
+import com.zc.photoalbum.ImageItem;
 import com.zc.photoalbum.SelectImageActivity;
 import com.zc.type.OpenType;
 
@@ -26,7 +30,7 @@ public class CameraManager {
 
     private static final String TAG = CameraManager.class.getSimpleName();
 
-
+    public static final String MAX_SELECT_ACTION = "com.zc.photoablume.MAX_SELECT_ACTION";
     /**
      * get photo for local
      */
@@ -102,6 +106,7 @@ public class CameraManager {
 
     private Intent getOpenAlbum() {
         Intent intent = new Intent(mContext,SelectImageActivity.class);
+        intent.putExtra(MAX_SELECT_ACTION, mBuilder.getMaxSelect());
         return intent;
     }
 
@@ -239,6 +244,14 @@ public class CameraManager {
             super.onPostExecute(aVoid);
             mAsyListern.onSelectedAsy(mBuilder.getPhotoUri().getTempFile()
                     .getPath());
+        }
+    }
+
+
+    public void albumResult(Intent data) {
+        if (null!=data) {
+           List<ImageItem> pathList = data.getParcelableArrayListExtra(MAX_SELECT_ACTION);
+           mAsyListern.onSelectedAsy(pathList);
         }
     }
 }

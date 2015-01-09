@@ -26,6 +26,16 @@ public class CameraOptions implements Parcelable {
     private PhotoUri mPhotoUri;
     private CropBuilder mCropBuilder;
     private OpenType mOpenType;
+    private int maxSelect;
+
+    public int getMaxSelect() {
+        return maxSelect !=0 ? maxSelect : DefaultOptions.MAXSELECT;
+    }
+
+    public CameraOptions setMaxSelect(int maxSelect) {
+        this.maxSelect = maxSelect;
+        return this;
+    }
 
     public Uri getFileUri() {
         if (mPhotoUri == null) {
@@ -73,8 +83,8 @@ public class CameraOptions implements Parcelable {
     public CropBuilder getCropBuilder() {
         return mCropBuilder != null ? mCropBuilder
                 : (mCropBuilder = new CropBuilder(DefaultOptions.X,
-                DefaultOptions.Y, DefaultOptions.width,
-                DefaultOptions.height));
+                DefaultOptions.Y, DefaultOptions.WIDTH,
+                DefaultOptions.HEIGHT));
     }
 
     public CameraOptions setCropBuilder(CropBuilder mCropBuilder) {

@@ -73,6 +73,8 @@ public class CameraHandler implements CameraOperate {
             case OPEN_GALLERY_CODE:
                 manager.galleryResult(data);
                 break;
+            case OPEN_USER_ALBUM:
+                manager.albumResult(data);
             default:
                 break;
             }
