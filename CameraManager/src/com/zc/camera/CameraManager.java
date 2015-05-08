@@ -3,7 +3,6 @@ package com.zc.camera;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentResolver;
@@ -11,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -44,12 +42,12 @@ public class CameraManager {
 
     private Bitmap compressImage;
 
-    private ImageSelcetListernAsy mAsyListern;
+    private ImageSelectListenerAsy mAsyListern;
 
     private CameraOperate mCameraOperate;
 
 
-    public CameraManager(Context context, ImageSelcetListernAsy listernAsy, CameraOptions mBuilder) {
+    public CameraManager(Context context, ImageSelectListenerAsy listernAsy, CameraOptions mBuilder) {
         super();
         this.mContext = context;
         this.mAsyListern = listernAsy;
@@ -77,8 +75,8 @@ public class CameraManager {
             distingOn();
     }
     
-    public void setImageSelcetListernAsy(ImageSelcetListernAsy mAsyListern){
-        this.mAsyListern=mAsyListern;
+    public void setImageSelectListenerAsy(ImageSelectListenerAsy mAsyListener){
+        this.mAsyListern=mAsyListener;
         
     }
 

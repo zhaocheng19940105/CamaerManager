@@ -29,7 +29,7 @@ public class CameraOptions implements Parcelable {
     private int maxSelect;
 
     public int getMaxSelect() {
-        return maxSelect !=0 ? maxSelect : DefaultOptions.MAXSELECT;
+        return maxSelect !=0 ? maxSelect : DefaultOptions.MAX_SELECT;
     }
 
     public CameraOptions setMaxSelect(int maxSelect) {
@@ -62,8 +62,8 @@ public class CameraOptions implements Parcelable {
 
     public PhotoUri getPhotoUri() {
         return mPhotoUri != null ? mPhotoUri : (mPhotoUri = new PhotoUri(
-                FileUtil.createFile(DefaultOptions.TEMPFILE),
-                Uri.fromFile(FileUtil.createFile(DefaultOptions.FILEURI))));
+                FileUtil.createFile(DefaultOptions.TEMP_FILE),
+                Uri.fromFile(FileUtil.createFile(DefaultOptions.FILE_URI))));
     }
 
     public CameraOptions setPhotoUri(PhotoUri mPhotoUri) {

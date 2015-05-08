@@ -48,9 +48,9 @@ public class CameraHandler implements CameraOperate {
         cameraOptions.init(mContext);
     }
 
-    public void setImageSelcetListernAsy(ImageSelcetListernAsy mAsyListern) {
+    public void setImageSelectListenerAsy(ImageSelectListenerAsy asyListener) {
         if (manager != null)
-            manager.setImageSelcetListernAsy(mAsyListern);
+            manager.setImageSelectListenerAsy(asyListener);
     }
 
     public void start() {

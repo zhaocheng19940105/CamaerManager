@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,14 +17,14 @@ import android.widget.LinearLayout;
 import com.zc.camera.CameraHandler;
 import com.zc.camera.CameraOptions;
 import com.zc.camera.CropBuilder;
-import com.zc.camera.ImageSelcetListernAsy;
+import com.zc.camera.ImageSelectListenerAsy;
 import com.zc.cameramanager.R;
 import com.zc.photoalbum.ImageItem;
 import com.zc.photoalbum.ImageLoaderUtil;
 import com.zc.type.OpenType;
 
 public class SimpleDemo extends Activity implements OnClickListener,
-        ImageSelcetListernAsy {
+        ImageSelectListenerAsy {
 
     private ImageView imageView;
     private CameraHandler cameraHandler;
@@ -40,7 +41,13 @@ public class SimpleDemo extends Activity implements OnClickListener,
         findViewById(R.id.button5).setOnClickListener(this);
         imageView = (ImageView) findViewById(R.id.imageView1);
         cameraHandler = new CameraHandler(this);
-        cameraHandler.setImageSelcetListernAsy(this);
+        cameraHandler.setImageSelectListenerAsy(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        //---Screen Rotation
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override

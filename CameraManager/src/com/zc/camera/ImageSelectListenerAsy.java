@@ -10,7 +10,7 @@ import com.zc.photoalbum.ImageItem;
  * @author zhaocheng
  * 
  */
-public interface ImageSelcetListernAsy {
+public interface ImageSelectListenerAsy {
     /**
      * get image Path Asy
      * 
