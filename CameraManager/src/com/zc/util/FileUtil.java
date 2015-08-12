@@ -1,4 +1,4 @@
-package com.zc.camera;
+package com.zc.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -11,10 +11,25 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 public class FileUtil {
 
+    /** app Í¼Æ¬ÎÄ¼þÄ¿Â¼ */
+    public static final String IMG_DIR = "imgs";
+    /**
+     * appÍ¼Æ¬»º´æÄ¿Â¼Â·¾¶
+     *
+     * @return
+     */
+    public static final String getImageDirPath(Context ctx) {
+        String path = SDCardUtil.getDefaultCachePath(ctx);
+        if (TextUtils.isEmpty(path)) {
+            return "";
+        }
+        return path + File.separator + IMG_DIR + File.separator;
+    }
     /**
      * Deprecated
      * see  android.text.format.Formatter.formatFileSize()

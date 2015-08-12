@@ -12,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 
+import com.zc.util.FileUtil;
+
 public class PhotoUtil {
     public static final String INTENT_BUILDER = "INTENT_BUILDER";
     public static final String INTENT_PATH = "INTENT_PATH";
@@ -206,7 +208,7 @@ public class PhotoUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            FileUtil.closeQuietly(outputStream,baos);
+            FileUtil.closeQuietly(outputStream, baos);
         }
 
     }

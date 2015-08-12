@@ -18,6 +18,7 @@ import com.zc.crop.CropImage;
 import com.zc.photoalbum.ImageItem;
 import com.zc.photoalbum.SelectImageActivity;
 import com.zc.type.OpenType;
+import com.zc.util.FileUtil;
 
 /**
  * camera util Used to invoke the android camera image compression processing

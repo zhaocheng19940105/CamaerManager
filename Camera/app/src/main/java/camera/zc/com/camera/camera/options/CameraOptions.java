@@ -1,24 +1,32 @@
-package com.zc.camera;
-
-import java.io.File;
-import java.io.Serializable;
-
-import com.zc.type.OpenType;
-import com.zc.util.FileUtil;
+package camera.zc.com.camera.camera.options;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Parcelable;
+
+import com.pingan.papd.camera.CropBuilder;
+import com.pingan.papd.camera.FileUtil;
+import com.pingan.papd.camera.IMThumbnailsPhoto;
+import com.pingan.papd.camera.PhotoUri;
+import com.pingan.papd.camera.type.OpenType;
+
+import java.io.File;
+import java.io.Serializable;
 
 /**
  * camera builder
- *
+ * 
  * @author zhaocheng
  */
 public class CameraOptions implements Serializable {
+
+    /**
+     * 
+     */
     private static final long serialVersionUID = 6057732981925437783L;
+
     public static final String INTENT_ACTION = "com.zc.camera.CameraOptions.ACTION";
+
     private static final String PERF_CONFIG_NAME = "setting";
     private static final String URI_KEY = "PHOTO_URI";
     private Context mContext;
@@ -27,13 +35,6 @@ public class CameraOptions implements Serializable {
     private CropBuilder mCropBuilder;
     private int maxSelect;
     private IMThumbnailsPhoto mImThumbnailsPhoto;
-    private String mPhotoForMat = PhotoFormat.PNG;
-
-    public CameraOptions setPhotoForMat(String photoForMat) {
-        this.mPhotoForMat = photoForMat;
-        DefaultOptions.getInstance(mContext).photoForMat = photoForMat;
-        return this;
-    }
 
     public Uri getFileUri() {
         if (mPhotoUri == null) {
@@ -95,8 +96,8 @@ public class CameraOptions implements Serializable {
     public CropBuilder getCropBuilder() {
         return mCropBuilder != null ? mCropBuilder
                 : (mCropBuilder = new CropBuilder(DefaultOptions.X,
-                DefaultOptions.Y, DefaultOptions.width,
-                DefaultOptions.height));
+                        DefaultOptions.Y, DefaultOptions.width,
+                        DefaultOptions.height));
     }
 
     public CameraOptions setCropBuilder(CropBuilder mCropBuilder) {
@@ -160,10 +161,6 @@ public class CameraOptions implements Serializable {
         this.mContext = mContext;
     }
 
-    public static CameraOptions createOptions(Context context, OpenType openType) {
-        return new CameraOptions(context, openType);
-    }
-
     public void init(Context context) {
         this.mContext = context;
     }
@@ -196,24 +193,23 @@ public class CameraOptions implements Serializable {
         return this;
     }
 
-    public CameraOptions(Context context, OpenType openType, CropBuilder cropBuilder,
-                         PhotoUri photoUri) {
-        this.mContext = context;
+    public CameraOptions(OpenType openType, CropBuilder cropBuilder,
+            PhotoUri photoUri) {
         this.mOpenType = openType;
         this.mCropBuilder = cropBuilder;
         this.mPhotoUri = photoUri;
     }
 
-    public CameraOptions(Context context, OpenType openType) {
-        this(context, openType, null, null);
+    public CameraOptions(OpenType openType) {
+        this(openType, null, null);
     }
 
-    public CameraOptions(Context context, OpenType openType, PhotoUri photoUri) {
-        this(context, openType, null, photoUri);
+    public CameraOptions(OpenType openType, PhotoUri photoUri) {
+        this(openType, null, photoUri);
     }
 
-    public CameraOptions(Context context, OpenType openType, CropBuilder cropBuilder) {
-        this(context, openType, cropBuilder, null);
+    public CameraOptions(OpenType openType, CropBuilder cropBuilder) {
+        this(openType, cropBuilder, null);
     }
 
 }

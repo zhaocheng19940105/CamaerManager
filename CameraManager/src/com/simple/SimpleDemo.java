@@ -18,6 +18,7 @@ import com.zc.camera.CameraHandler;
 import com.zc.camera.CameraOptions;
 import com.zc.camera.CropBuilder;
 import com.zc.camera.ImageSelectListenerAsy;
+import com.zc.camera.PhotoFormat;
 import com.zc.cameramanager.R;
 import com.zc.photoalbum.ImageItem;
 import com.zc.photoalbum.ImageLoaderUtil;
@@ -54,30 +55,29 @@ public class SimpleDemo extends Activity implements OnClickListener,
     public void onClick(View v) {
 
         switch (v.getId()) {
-        case R.id.button1:
-            cameraHandler.setCameraOptions(CameraOptions
-                    .creatOptions(OpenType.OPEN_CAMERA));
-            break;
-        case R.id.button2:
-            cameraHandler.setCameraOptions(CameraOptions.creatOptions(
-                    OpenType.OPEN_CAMERA_CROP).setCropBuilder(
-                    new CropBuilder(2, 3, 300, 450)));
-            break;
-        case R.id.button3:
-            cameraHandler.setCameraOptions(CameraOptions
-                    .creatOptions(OpenType.OPEN_GALLERY));
-            break;
-        case R.id.button4:
-            cameraHandler.setCameraOptions(CameraOptions.creatOptions(
-                    OpenType.OPEN_GALLERY_CROP).setCropBuilder(
-                    new CropBuilder(2, 3, 300, 450)));
-            break;
-        case R.id.button5:
-            cameraHandler.setCameraOptions(CameraOptions.creatOptions(
-                    OpenType.OPRN_USER_ALBUM).setMaxSelect(3));
-            break;
-        default:
-            break;
+            case R.id.button1:
+                cameraHandler.setCameraOptions(CameraOptions.createOptions(this, OpenType.OPEN_CAMERA).setPhotoForMat(PhotoFormat.PNG));
+                break;
+            case R.id.button2:
+                cameraHandler.setCameraOptions(CameraOptions.createOptions(this,
+                        OpenType.OPEN_CAMERA_CROP).setCropBuilder(
+                        new CropBuilder(2, 3, 300, 450)));
+                break;
+            case R.id.button3:
+                cameraHandler.setCameraOptions(CameraOptions
+                        .createOptions(this, OpenType.OPEN_GALLERY).setPhotoForMat(PhotoFormat.PNG));
+                break;
+            case R.id.button4:
+                cameraHandler.setCameraOptions(CameraOptions.createOptions(this,
+                        OpenType.OPEN_GALLERY_CROP).setCropBuilder(
+                        new CropBuilder(2, 3, 300, 450)));
+                break;
+            case R.id.button5:
+                cameraHandler.setCameraOptions(CameraOptions.createOptions(this,
+                        OpenType.OPRN_USER_ALBUM).setMaxSelect(3));
+                break;
+            default:
+                break;
         }
         cameraHandler.start();
 
@@ -92,7 +92,6 @@ public class SimpleDemo extends Activity implements OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (cameraHandler != null) {
             cameraHandler.dispatchCamera(requestCode, resultCode, data);
         }
